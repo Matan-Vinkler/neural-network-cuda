@@ -209,7 +209,7 @@ int main()
     test_relu_backward();
     test_sigmoid_backward();
 
-    //TODO: Implement Binary Cross Entropy Loss
+    //TODO: Implement Binary Cross Entropy
 
     return 0;
 }
