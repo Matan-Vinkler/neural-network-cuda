@@ -77,11 +77,16 @@
     </CudaCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <CudaCompile Include="linear_layer.cu" />
+    <CudaCompile Include="layers\linear_layer.cu" />
     <CudaCompile Include="main.cu" />
+    <CudaCompile Include="layers\relu_layer.cu" />
+    <CudaCompile Include="layers\sigmoid_layer.cu" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="linear_layer.h" />
+    <ClInclude Include="layers\layer.h" />
+    <ClInclude Include="layers\linear_layer.h" />
+    <ClInclude Include="layers\relu_layer.h" />
+    <ClInclude Include="layers\sigmoid_layer.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -1,20 +1,16 @@
 #ifndef LINEAR_LAYER_H_
 #define LINEAR_LAYER_H_
 
-class LinearLayer
+#include "layer.h"
+
+class Linear : public Layer
 {
 public:
-    int input_dim;
-    int output_dim;
-
     float* d_weights;   // [ input_dim x output_dim ]
     float* d_bias;      // [ 1 x output_dim ]
 
-    float* d_input;     // [ batch_size x dim_input ], cached for backprop
-    float* d_output;    // [ batch_size x dim_output ]
-
-    LinearLayer(int input_dim, int output_dim);
-    ~LinearLayer();
+    Linear(int input_dim, int output_dim);
+    ~Linear();
 
     void forward(float* d_input, int batch_size);
     void backward(float* d_output_grad, float* d_input_grad, float learning_rate, int batch_size);

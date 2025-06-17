@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <CudaCompile Include="Layers\linear_layer.cu" />
+    <CudaCompile Include="main.cu" />
+    <CudaCompile Include="layers\relu_layer.cu" />
+    <CudaCompile Include="layers\sigmoid_layer.cu" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Layers\linear_layer.h" />
+    <ClInclude Include="layers\layer.h" />
+    <ClInclude Include="layers\relu_layer.h" />
+    <ClInclude Include="layers\sigmoid_layer.h" />
+  </ItemGroup>
+</Project>
