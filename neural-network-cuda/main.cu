@@ -3,7 +3,6 @@
 
 #include <iostream>
 #include <cassert>
-#include <filesystem>
 
 #include "layers/linear_layer.h"
 #include "layers/relu_layer.h"
