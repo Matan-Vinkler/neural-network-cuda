@@ -1,7 +1,7 @@
 #include "sigmoid_layer.h"
 
-#include "cuda_runtime.h"
-#include "device_launch_parameters.h"
+#include <cuda_runtime.h>
+#include <device_launch_parameters.h>
 
 __global__ void sigmoid_forward_kernel(float* input, float* output, int size)
 {
@@ -46,9 +46,12 @@ void Sigmoid::forward(float* d_input, int batch_size)
 	cudaDeviceSynchronize();
 }
 
-void Sigmoid::backward(float* d_output_grad, float* d_input_grad, float, int batch_size)
+void Sigmoid::backward(float* d_output_grad, float, int batch_size)
 {
 	int size = batch_size * input_dim;
+
+    cudaFree(d_input_grad);
+    cudaMalloc(&d_input_grad, sizeof(float) * size);
 
 	int threads = 256;
 	int blocks = (size + threads - 1) / threads;

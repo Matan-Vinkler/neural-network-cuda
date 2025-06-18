@@ -13,7 +13,7 @@ public:
     ~Linear();
 
     void forward(float* d_input, int batch_size);
-    void backward(float* d_output_grad, float* d_input_grad, float learning_rate, int batch_size);
+    void backward(float* d_output_grad, float learning_rate, int batch_size);
 };
 
 #endif // !LINEAR_LAYER_H_

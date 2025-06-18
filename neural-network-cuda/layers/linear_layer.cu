@@ -1,8 +1,8 @@
 #include "linear_layer.h"
 
-#include "cuda_runtime.h"
-#include "device_launch_parameters.h"
-#include "curand_kernel.h"
+#include <cuda_runtime.h>
+#include <device_launch_parameters.h>
+#include <curand_kernel.h>
 
 #include <ctime>
 #include <algorithm>
@@ -173,13 +173,16 @@ void Linear::forward(float* d_input, int batch_size)
 	cudaDeviceSynchronize();
 }
 
-void Linear::backward(float* d_output_grad, float* d_input_grad, float learning_rate, int batch_size)
+void Linear::backward(float* d_output_grad, float learning_rate, int batch_size)
 {
 	int threads_dW = 16, threads_db = 256;
 	dim3 blockDim(threads_dW, threads_dW);
 	dim3 gridDimW((output_dim + threads_dW - 1) / threads_dW, (input_dim + threads_dW - 1) / threads_dW);
 	dim3 gridDimX((input_dim + threads_dW - 1) / threads_dW, (batch_size + threads_dW - 1) / threads_dW);
 	dim3 gridDimB((output_dim + threads_db - 1) / threads_db);
+
+    cudaFree(d_input_grad);
+    cudaMalloc(&d_input_grad, sizeof(float) * batch_size * input_dim);
 
 	float* d_dW, * d_db;
 	cudaMalloc(&d_dW, sizeof(float) * input_dim * output_dim);

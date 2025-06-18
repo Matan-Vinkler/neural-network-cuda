@@ -1,5 +1,5 @@
-﻿#include "cuda_runtime.h"
-#include "device_launch_parameters.h"
+﻿#include <cuda_runtime.h>
+#include <device_launch_parameters.h>
 
 #include <iostream>
 #include <cassert>
@@ -7,6 +7,7 @@
 #include "layers/linear_layer.h"
 #include "layers/relu_layer.h"
 #include "layers/sigmoid_layer.h"
+#include "loss/bce_loss.h"
 
 void print_matrix(const float* data, int rows, int cols) {
     for (int i = 0; i < rows; ++i) {
@@ -25,7 +26,7 @@ void print_matrix(const float* data, int rows, int cols) {
     } \
 } while(0)
 
-void test_linear_backward() {
+void test_linear() {
     const int batch_size = 3;
     const int input_dim = 3;
     const int output_dim = 3;
@@ -58,17 +59,16 @@ void test_linear_backward() {
     CHECK_CUDA(cudaMalloc(&d_dY, sizeof(float) * batch_size * output_dim));
     CHECK_CUDA(cudaMemcpy(d_dY, h_dY, sizeof(float) * batch_size * output_dim, cudaMemcpyHostToDevice));
 
-    // Input gradient output
-    float* d_dX;
-    CHECK_CUDA(cudaMalloc(&d_dX, sizeof(float) * batch_size * input_dim));
+    
 
     // Store original weights and biases
     float h_W_before[input_dim * output_dim], h_b_before[output_dim];
     CHECK_CUDA(cudaMemcpy(h_W_before, layer.d_weights, sizeof(float) * input_dim * output_dim, cudaMemcpyDeviceToHost));
     CHECK_CUDA(cudaMemcpy(h_b_before, layer.d_bias, sizeof(float) * output_dim, cudaMemcpyDeviceToHost));
 
-    // Backward pass
-    layer.backward(d_dY, d_dX, lr, batch_size);
+    // Backward pass, input gradient output
+    layer.backward(d_dY, lr, batch_size);
+    float* d_dX = layer.get_input_grad();
 
     // Get updated weights and biases
     float h_W_after[input_dim * output_dim], h_b_after[output_dim];
@@ -100,6 +100,8 @@ void test_linear_backward() {
 
     std::cout << "Backward pass test passed.\n";
 
+    std::cout << std::endl;
+
     // Cleanup
     cudaFree(d_input);
     cudaFree(d_output);
@@ -107,7 +109,7 @@ void test_linear_backward() {
     cudaFree(d_dX);
 }
 
-void test_relu_backward() 
+void test_relu() 
 {
     const int batch_size = 2;
     const int dim = 4;
@@ -126,7 +128,6 @@ void test_relu_backward()
     float* d_input, * d_grad_out, * d_grad_input;
     cudaMalloc(&d_input, size * sizeof(float));
     cudaMalloc(&d_grad_out, size * sizeof(float));
-    cudaMalloc(&d_grad_input, size * sizeof(float));
 
     // Copy input to device
     cudaMemcpy(d_input, h_input, size * sizeof(float), cudaMemcpyHostToDevice);
@@ -143,10 +144,13 @@ void test_relu_backward()
     print_matrix(h_output, 1, size);
 
     // Run backward
-    relu.backward(d_grad_out, d_grad_input, 0.0f, batch_size);
+    relu.backward(d_grad_out, 0.0f, batch_size);
+    d_grad_input = relu.get_input_grad();
     cudaMemcpy(h_grad_input, d_grad_input, size * sizeof(float), cudaMemcpyDeviceToHost);
     std::cout << "ReLU backward grad_input:\n";
     print_matrix(h_grad_input, 1, size);
+
+    std::cout << std::endl;
 
     // Free
     cudaFree(d_input);
@@ -154,7 +158,7 @@ void test_relu_backward()
     cudaFree(d_grad_input);
 }
 
-void test_sigmoid_backward()
+void test_sigmoid()
 {
     const int batch_size = 2;
     const int dim = 4;
@@ -174,7 +178,6 @@ void test_sigmoid_backward()
     float* d_input, * d_output_grad, * d_input_grad;
     cudaMalloc(&d_input, size * sizeof(float));
     cudaMalloc(&d_output_grad, size * sizeof(float));
-    cudaMalloc(&d_input_grad, size * sizeof(float));
 
     cudaMemcpy(d_input, h_input, size * sizeof(float), cudaMemcpyHostToDevice);
     cudaMemcpy(d_output_grad, h_output_grad, size * sizeof(float), cudaMemcpyHostToDevice);
@@ -191,11 +194,15 @@ void test_sigmoid_backward()
     print_matrix(h_output, batch_size, dim);
 
     // Backward
-    sigmoid.backward(d_output_grad, d_input_grad, 0.0f, batch_size);
+    sigmoid.backward(d_output_grad, 0.0f, batch_size);
+    d_input_grad = sigmoid.get_input_grad();
+
     float h_input_grad[size];
     cudaMemcpy(h_input_grad, d_input_grad, size * sizeof(float), cudaMemcpyDeviceToHost);
     std::cout << "Sigmoid Backward d_input_grad: \n";
     print_matrix(h_input_grad, batch_size, dim);
+
+    std::cout << std::endl;
 
     // Cleanup
     cudaFree(d_input);
@@ -203,13 +210,42 @@ void test_sigmoid_backward()
     cudaFree(d_input_grad);
 }
 
+void test_bce_loss() {
+    const int batch_size = 4;
+    float h_yhat[batch_size] = { 0.9f, 0.2f, 0.7f, 0.1f };
+    float h_y[batch_size] = { 1.0f, 0.0f, 1.0f, 0.0f };
+
+    float* d_yhat, * d_y, * d_output_grad;
+    cudaMalloc(&d_yhat, batch_size * sizeof(float));
+    cudaMalloc(&d_y, batch_size * sizeof(float));
+
+    cudaMemcpy(d_yhat, h_yhat, batch_size * sizeof(float), cudaMemcpyHostToDevice);
+    cudaMemcpy(d_y, h_y, batch_size * sizeof(float), cudaMemcpyHostToDevice);
+
+    BCELoss loss;
+    float avg_loss = loss.compute_loss(d_yhat, d_y, batch_size);
+    std::cout << "[BCE Class] Average loss: " << avg_loss << std::endl;
+
+    d_output_grad = loss.compute_loss_grad(d_yhat, d_y, batch_size);
+    float h_output_grad[batch_size];
+    cudaMemcpy(h_output_grad, d_output_grad, sizeof(float) * batch_size, cudaMemcpyDeviceToHost);
+
+    std::cout << "[BCE Class] Gradients (dL/dYhat):" << std::endl;
+    print_matrix(h_output_grad, batch_size, 1);
+
+    std::cout << std::endl;
+
+    cudaFree(d_yhat);
+    cudaFree(d_y);
+    cudaFree(d_output_grad);
+}
+
 int main()
 {
-    test_linear_backward();
-    test_relu_backward();
-    test_sigmoid_backward();
-
-    //TODO: Implement Binary Cross Entropy
+    test_linear();
+    test_relu();
+    test_sigmoid();
+    test_bce_loss();
 
     return 0;
 }

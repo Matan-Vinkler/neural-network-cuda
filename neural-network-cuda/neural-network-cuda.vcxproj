@@ -80,12 +80,14 @@
     </CudaCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <CudaCompile Include="loss\bce_loss.cu" />
     <CudaCompile Include="layers\linear_layer.cu" />
     <CudaCompile Include="main.cu" />
     <CudaCompile Include="layers\relu_layer.cu" />
     <CudaCompile Include="layers\sigmoid_layer.cu" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="loss\bce_loss.h" />
     <ClInclude Include="layers\layer.h" />
     <ClInclude Include="layers\linear_layer.h" />
     <ClInclude Include="layers\relu_layer.h" />

@@ -5,11 +5,13 @@
     <CudaCompile Include="main.cu" />
     <CudaCompile Include="layers\relu_layer.cu" />
     <CudaCompile Include="layers\sigmoid_layer.cu" />
+    <CudaCompile Include="loss\bce_loss.cu" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Layers\linear_layer.h" />
     <ClInclude Include="layers\layer.h" />
     <ClInclude Include="layers\relu_layer.h" />
     <ClInclude Include="layers\sigmoid_layer.h" />
+    <ClInclude Include="loss\bce_loss.h" />
   </ItemGroup>
 </Project>
