@@ -68,5 +68,5 @@ float* BCELoss::compute_loss_grad(float* d_yhat, float* d_y, int batch_size)
     bce_grad_kernel << <blocks, threads >> > (d_yhat, d_y, d_grad, batch_size);
     cudaDeviceSynchronize();
 
-    return d_grad;
+    return d_grad; /* do not forget to free 'd_grad'! */
 }

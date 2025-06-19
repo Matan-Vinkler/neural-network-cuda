@@ -6,6 +6,9 @@
 
 #include <ctime>
 #include <algorithm>
+#include <iostream>
+
+#include "../utils/utils.h"
 
 // This function init vector or matrix with random values
 __global__ void init_random_weights(float* data, int size, float scale, unsigned long seed)
@@ -124,7 +127,7 @@ __global__ void sgd_update_kernel(float* W, float* dW, float* b, float* db, floa
 	}
 }
 
-Linear::Linear(int input_dim, int output_dim) : Layer(input_dim, output_dim), d_weights(nullptr), d_bias(nullptr)
+Linear::Linear(int input_dim, int output_dim, bool debug_print) : Layer(input_dim, output_dim), d_weights(nullptr), d_bias(nullptr), debug_print(debug_print)
 {
 	this->input_dim = input_dim;
 	this->output_dim = output_dim;
@@ -170,7 +173,7 @@ void Linear::forward(float* d_input, int batch_size)
 	dim3 blocks_b((batch_size + 15) / 16, (output_dim + 15) / 16);
 	add_bias_kernel << <blocks_b, threads_b >> > (d_output, d_bias, batch_size, output_dim);
 
-	cudaDeviceSynchronize();
+	cudaDeviceSynchronize(); 
 }
 
 void Linear::backward(float* d_output_grad, float learning_rate, int batch_size)
@@ -199,4 +202,23 @@ void Linear::backward(float* d_output_grad, float learning_rate, int batch_size)
 	cudaFree(d_db);
 
 	cudaDeviceSynchronize();
+}
+
+float* Linear::get_weights() const
+{
+	return d_weights;
+}
+
+float* Linear::get_bias() const
+{
+    return d_bias;
+}
+
+void Linear::print_params() const
+{
+    std::cout << "weights:\n";
+    print_d_matrix(d_weights, input_dim, output_dim);
+
+    std::cout << "biases:\n";
+    print_d_matrix(d_bias, 1, output_dim);
 }
