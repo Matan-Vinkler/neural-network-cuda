@@ -46,7 +46,7 @@ void test_train_model()
 
 int main()
 {
-    for (int i = 0; i < 1; i++)
+    for (int i = 0; i < 10; i++)
     {
         std::cout << "[---------------------- Test " << i + 1 << " ----------------------]\n";
         test_train_model();
