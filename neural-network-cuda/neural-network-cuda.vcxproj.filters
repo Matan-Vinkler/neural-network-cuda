@@ -7,6 +7,7 @@
     <CudaCompile Include="layers\sigmoid_layer.cu" />
     <CudaCompile Include="loss\bce_loss.cu" />
     <CudaCompile Include="layers\sequential.cu" />
+    <CudaCompile Include="train\train.cu" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Layers\linear_layer.h" />
@@ -16,6 +17,7 @@
     <ClInclude Include="loss\bce_loss.h" />
     <ClInclude Include="layers\sequential.h" />
     <ClInclude Include="utils\utils.h" />
+    <ClInclude Include="train\train.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="utils\utils.cpp" />

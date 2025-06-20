@@ -1,5 +1,5 @@
 #ifndef BCE_LOSS_H_
-#define BCE_LOSS_H
+#define BCE_LOSS_H_
 
 class BCELoss
 {

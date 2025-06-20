@@ -1,9 +1,11 @@
 #ifndef SEQUENTIAL_H_
-#define SEQUENCTIAL_H_
+#define SEQUENTIAL_H_
 
 #include "layer.h"
 
 #include <vector>
+
+#include "../loss/bce_loss.h"
 
 class Sequential : public Layer
 {

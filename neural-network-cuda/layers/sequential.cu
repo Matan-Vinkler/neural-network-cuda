@@ -37,9 +37,9 @@ void Sequential::backward(float* d_output_grad, float learning_rate, int batch_s
 {
     float* current_output_grad = d_output_grad;
 
-    for (int i = layers_vec.size() - 1; i >= 0; i--)
+    for (auto it = layers_vec.rbegin(); it != layers_vec.rend(); ++it)
     {
-        Layer* layer = layers_vec[i];
+        Layer* layer = *it;
         layer->backward(current_output_grad, learning_rate, batch_size);
         current_output_grad = layer->get_input_grad();
     }
