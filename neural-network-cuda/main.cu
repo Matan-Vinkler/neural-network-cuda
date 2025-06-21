@@ -1,18 +1,13 @@
-﻿#include <cuda_runtime.h>
-#include <device_launch_parameters.h>
-
-#include <iostream>
-#include <cassert>
+﻿#include <iostream>
 
 #include "layers/linear_layer.h"
 #include "layers/relu_layer.h"
 #include "layers/sigmoid_layer.h"
 #include "layers/sequential.h"
 #include "loss/bce_loss.h"
-
 #include "utils/utils.h"
-
 #include "train/train.h"
+#include "data/data_load.h"
 
 void test_train_model()
 {
@@ -44,19 +39,35 @@ void test_train_model()
     train_model(model, loss, h_input, h_labels, num_samples, input_dim, batch_size, epoches, learning_rate, true);
 }
 
-int main()
+void test_data_load()
 {
-    for (int i = 0; i < 10; i++)
+    std::vector<float> vec_inputs;
+    std::vector<float> vec_labels;
+
+    int input_dim = 64 * 64;
+    if (!load_csv_data("data/data.csv", vec_inputs, vec_labels, input_dim))
     {
-        std::cout << "[---------------------- Test " << i + 1 << " ----------------------]\n";
-        test_train_model();
-        std::cout << "[----------------------------------------------------]\n\n";
+        std::cerr << "Failed to load data!" << std::endl;
+        return;
     }
 
-    std::cout << std::endl;
+    int num_samples = vec_labels.size();
+
+    print_dataset(vec_inputs, vec_labels, input_dim, num_samples);
+}
+
+int main()
+{
+    test_data_load();
+
+    for (int i = 0; i < 10; i++)
+    {
+        std::cout << "[----------------------------------------------------Test " << i + 1 << "----------------------------------------------------]\n";
+        test_train_model();
+        std::cout << "[--------------------------------------------------------------------------------------------------------------]" << std::endl;
+    }
 
     //TODO: Fix loss stuck value (maybe gradient vanishing)
-    //TODO: Implement data load
 
     return 0;
 }

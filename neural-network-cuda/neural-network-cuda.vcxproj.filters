@@ -18,8 +18,13 @@
     <ClInclude Include="layers\sequential.h" />
     <ClInclude Include="utils\utils.h" />
     <ClInclude Include="train\train.h" />
+    <ClInclude Include="data\data_load.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="utils\utils.cpp" />
+    <ClCompile Include="data\data_load.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="data\data.csv" />
   </ItemGroup>
 </Project>
