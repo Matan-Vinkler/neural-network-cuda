@@ -6,7 +6,7 @@
 class Linear : public Layer
 {
 public:
-    Linear(int input_dim, int output_dim, bool debug_print = false);
+    Linear(int input_dim, int output_dim);
     ~Linear();
 
     void forward(float* d_input, int batch_size);
@@ -20,8 +20,6 @@ public:
 private:
     float* d_weights;   // [ input_dim x output_dim ]
     float* d_bias;      // [ 1 x output_dim ]
-
-    bool debug_print;
 };
 
 #endif // !LINEAR_LAYER_H_

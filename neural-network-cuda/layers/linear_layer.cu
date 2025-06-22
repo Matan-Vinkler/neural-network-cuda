@@ -127,7 +127,7 @@ __global__ void sgd_update_kernel(float* W, float* dW, float* b, float* db, floa
 	}
 }
 
-Linear::Linear(int input_dim, int output_dim, bool debug_print) : Layer(input_dim, output_dim), d_weights(nullptr), d_bias(nullptr), debug_print(debug_print)
+Linear::Linear(int input_dim, int output_dim) : Layer(input_dim, output_dim), d_weights(nullptr), d_bias(nullptr)
 {
 	this->input_dim = input_dim;
 	this->output_dim = output_dim;
@@ -146,8 +146,12 @@ Linear::Linear(int input_dim, int output_dim, bool debug_print) : Layer(input_di
 
 	unsigned long seed = static_cast<unsigned long>(time(NULL));
 
-	init_random_weights << <weight_blocks, threads >> > (d_weights, weight_size, 0.01f, seed);
-	init_random_weights << <bias_blocks, threads >> > (d_bias, bias_size, 0.01f, seed + 1);
+    const float scale = 0.1f;
+
+	init_random_weights << <weight_blocks, threads >> > (d_weights, weight_size, scale, seed);
+	init_random_weights << <bias_blocks, threads >> > (d_bias, bias_size, scale, seed + 1);
+
+    //TODO: Implement Xavier and He initializations
 }
 
 Linear::~Linear()

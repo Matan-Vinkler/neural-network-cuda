@@ -2,13 +2,14 @@
 
 #include <cuda_runtime.h>
 #include <device_launch_parameters.h>
+#include <iostream>
 
 __global__ void sigmoid_forward_kernel(float* input, float* output, int size)
 {
 	int idx = blockIdx.x * blockDim.x + threadIdx.x;
 	if (idx < size)
 	{
-		output[idx] = 1 / (1 + expf(-input[idx]));
+		output[idx] = 1.0f / (1.0f + expf(-input[idx]));
 	}
 }
 

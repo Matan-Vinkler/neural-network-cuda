@@ -4,7 +4,7 @@
 #include <sstream>
 #include <iostream>
 
-bool load_csv_data(const std::string& filename, std::vector<float>& input, std::vector<float>& labels, int input_dim)
+bool load_csv_data(const std::string& filename, std::vector<float>& inputs, std::vector<float>& labels, int input_dim)
 {
     std::ifstream file(filename);
     if (!file.is_open())
@@ -38,9 +38,19 @@ bool load_csv_data(const std::string& filename, std::vector<float>& input, std::
             labels.push_back(row[0]);
             for (int i = 1; i <= input_dim; i++)
             {
-                input.push_back(row[i]);
+                inputs.push_back(row[i]);
             }
         }
         row_num++;
+    }
+
+    return true;
+}
+
+void normalize_data(std::vector<float>& inputs)
+{
+    for (float& val : inputs)
+    {
+        val /= 255.0f;
     }
 }

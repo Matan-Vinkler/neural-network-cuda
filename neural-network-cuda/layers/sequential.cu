@@ -1,5 +1,7 @@
 #include "sequential.h"
 
+#include "sigmoid_layer.h"
+
 Sequential::~Sequential()
 {
     for (Layer* layer : layers_vec)
@@ -26,8 +28,17 @@ void Sequential::forward(float* d_input, int batch_size)
 
     for (Layer* layer : layers_vec)
     {
-        layer->forward(current_input, batch_size);
-        current_input = layer->get_output();
+        Sigmoid* sig_layer = dynamic_cast<Sigmoid*>(layer);
+        if (sig_layer)
+        {
+            sig_layer->forward(current_input, batch_size);
+            current_input = sig_layer->get_output();
+        }
+        else
+        {
+            layer->forward(current_input, batch_size);
+            current_input = layer->get_output();
+        }
     }
 
     d_output = current_input;

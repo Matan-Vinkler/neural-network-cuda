@@ -2,11 +2,14 @@
 
 #include <cuda_runtime.h>
 #include <iostream>
+#include <iomanip>
 
 void print_h_matrix(const float* data, int rows, int cols) {
-    for (int i = 0; i < rows; ++i) {
-        for (int j = 0; j < cols; ++j) {
-            std::cout << data[i * cols + j] << " ";
+    for (int i = 0; i < rows; ++i)
+    {
+        for (int j = 0; j < cols; ++j)
+        {
+            std::cout << std::fixed << std::setprecision(2) << data[i * cols + j] << " ";
         }
         std::cout << "\n";
     }
