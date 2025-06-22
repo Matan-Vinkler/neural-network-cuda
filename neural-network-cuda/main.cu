@@ -9,7 +9,7 @@
 #include "train/train.h"
 #include "data/data_load.h"
 
-int test_main()
+int main()
 {
     int input_dim = 64 * 64;
     int hidden_dim = 1024;
@@ -45,12 +45,6 @@ int test_main()
     train_model(model, loss_fn, h_inputs, h_labels, num_samples, input_dim, batch_size, epoches, learning_rate, true);
 
     return 0;
-}
 
-int main()
-{
-    test_main();
-    return 0;
-
-    //TODO: Add test routine
+    //TODO: Add test data routine
 }
