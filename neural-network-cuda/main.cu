@@ -27,10 +27,10 @@ int main()
 
     normalize_data(vec_train_inputs);
 
-    int num_samples_train = vec_train_labels.size();
-    int batch_size = 10;
+    unsigned int num_samples_train = static_cast<int>(vec_train_labels.size());
+    unsigned int batch_size = 10;
     const float learning_rate = 0.01f;
-    const int epoches = 100;
+    const int epoches = 150;
 
     float* h_train_inputs = vec_train_inputs.data();
     float* h_train_labels = vec_train_labels.data();
@@ -55,7 +55,7 @@ int main()
         return -1;
     }
 
-    int num_samples_val = vec_val_labels.size();
+    int num_samples_val = static_cast<int>(vec_val_labels.size());
 
     return 0;
 
