@@ -8,6 +8,7 @@
     <CudaCompile Include="loss\bce_loss.cu" />
     <CudaCompile Include="layers\sequential.cu" />
     <CudaCompile Include="train\train.cu" />
+    <CudaCompile Include="accuracy\bin_acc.cu" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Layers\linear_layer.h" />
@@ -19,12 +20,14 @@
     <ClInclude Include="utils\utils.h" />
     <ClInclude Include="train\train.h" />
     <ClInclude Include="data\data_load.h" />
+    <ClInclude Include="accuracy\bin_acc.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="utils\utils.cpp" />
     <ClCompile Include="data\data_load.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="data\data.csv" />
+    <None Include="data\train_data.csv" />
+    <None Include="data\val_data.csv" />
   </ItemGroup>
 </Project>

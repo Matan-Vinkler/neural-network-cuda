@@ -39,7 +39,7 @@ void shuffle_dataset(float* h_input, float* h_labels, int num_samples, int input
     }
 }
 
-void train_model(Sequential& model, BCELoss& loss_fn, float* h_input, float* h_labels, int num_samples, int input_dim, int batch_size, int n_epoches, float lr, bool shuffle = true)
+void train_model(Sequential& model, BCELoss& loss_fn, BinaryAccuracy& acc_fn, float* h_input, float* h_labels, int num_samples, int input_dim, int batch_size, int n_epoches, float lr, bool shuffle = true)
 {
     std::cout << "Begin training..." << std::endl;
 
@@ -55,6 +55,7 @@ void train_model(Sequential& model, BCELoss& loss_fn, float* h_input, float* h_l
         }
 
         float total_loss = 0.0f;
+        float total_acc = 0.0f;
         int num_batches = num_samples / batch_size;
 
         for (int i_batch = 0; i_batch < num_batches; i_batch++)
@@ -71,14 +72,18 @@ void train_model(Sequential& model, BCELoss& loss_fn, float* h_input, float* h_l
             float loss = loss_fn.compute_loss(d_output, d_labels, batch_size);
             total_loss += loss;
 
+            float acc = acc_fn.calculate_acc(d_output, d_labels, batch_size);
+            total_acc += acc;
+
             float* d_loss_grad = loss_fn.compute_loss_grad(d_output, d_labels, batch_size);
             model.backward(d_loss_grad, lr, batch_size);
         }
 
         float avg_loss = total_loss / num_batches;
+        float avg_acc = total_acc / num_batches;
         if (i_epoch % 10 == 0 || i_epoch == n_epoches - 1)
         {
-            std::cout << "[Epoch " << i_epoch + 1 << "] Loss: " << avg_loss << "\n";
+            std::cout << "[Epoch " << i_epoch + 1 << "] Loss: " << avg_loss << ", Accuracy: " << avg_acc << "\n";
         }
     }
 

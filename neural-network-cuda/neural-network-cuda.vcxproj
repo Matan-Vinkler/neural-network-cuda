@@ -80,6 +80,7 @@
     </CudaCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <CudaCompile Include="accuracy\bin_acc.cu" />
     <CudaCompile Include="loss\bce_loss.cu" />
     <CudaCompile Include="layers\linear_layer.cu" />
     <CudaCompile Include="main.cu" />
@@ -89,6 +90,7 @@
     <CudaCompile Include="train\train.cu" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="accuracy\bin_acc.h" />
     <ClInclude Include="data\data_load.h" />
     <ClInclude Include="loss\bce_loss.h" />
     <ClInclude Include="layers\layer.h" />
@@ -104,7 +106,8 @@
     <ClCompile Include="utils\utils.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="data\data.csv" />
+    <None Include="data\val_data.csv" />
+    <None Include="data\train_data.csv" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
