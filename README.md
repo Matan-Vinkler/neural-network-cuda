@@ -5,7 +5,7 @@ A fully functional feedforward neural network built from **scratch** using **C++
 ---
 
 ## 💭 Table of Content
-- [🚀 Features](#features)
+- [🚀 Features](#🚀-features)
 - [🧠 Model Architecture](#model-architecture)
 - [📸 Dataset Format](#dataset-format)
 - [📁 Project Structure](#project-structure)
