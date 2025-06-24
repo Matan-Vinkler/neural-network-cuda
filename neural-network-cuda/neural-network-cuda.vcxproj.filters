@@ -9,6 +9,7 @@
     <CudaCompile Include="layers\sequential.cu" />
     <CudaCompile Include="train\train.cu" />
     <CudaCompile Include="accuracy\bin_acc.cu" />
+    <CudaCompile Include="validate\validate.cu" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Layers\linear_layer.h" />
@@ -21,6 +22,7 @@
     <ClInclude Include="train\train.h" />
     <ClInclude Include="data\data_load.h" />
     <ClInclude Include="accuracy\bin_acc.h" />
+    <ClInclude Include="validate\validate.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="utils\utils.cpp" />

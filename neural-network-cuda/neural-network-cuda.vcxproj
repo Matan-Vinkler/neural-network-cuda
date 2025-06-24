@@ -88,6 +88,7 @@
     <CudaCompile Include="layers\sigmoid_layer.cu" />
     <CudaCompile Include="layers\sequential.cu" />
     <CudaCompile Include="train\train.cu" />
+    <CudaCompile Include="validate\validate.cu" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="accuracy\bin_acc.h" />
@@ -100,6 +101,7 @@
     <ClInclude Include="layers\sequential.h" />
     <ClInclude Include="train\train.h" />
     <ClInclude Include="utils\utils.h" />
+    <ClInclude Include="validate\validate.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="data\data_load.cpp" />
