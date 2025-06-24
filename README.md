@@ -6,17 +6,17 @@ A fully functional feedforward neural network built from **scratch** using **C++
 
 ## 💭 Table of Content
 - [🚀 Features](#-features)
-- [🧠 Model Architecture](#model-architecture)
-- [📸 Dataset Format](#dataset-format)
-- [📁 Project Structure](#project-structure)
-- [🧑‍💻 Development Environment](#development-environment)
-- [🧪 Example Training Output](#example-training-output)
-- [▶️ Running the Project](#running-the-project)
-- [📌 Goals of This Project](#goals-of-this-project)
-- [✅ What is Achieved](#what-is-achieved)
-- [🔮 Future Ideas (Optional)](#future-ideas-optional)
-- [📄 License](#license)
-- [🙋‍♂️ Author](#author)
+- [🧠 Model Architecture](#-model-architecture)
+- [📸 Dataset Format](#-dataset-format)
+- [📁 Project Structure](#-project-structure)
+- [🧑‍💻 Development Environment](#-development-environment)
+- [🧪 Example Training Output](#-example-training-output)
+- [▶️ Running the Project](#-running-the-project)
+- [📌 Goals of This Project](#-goals-of-this-project)
+- [✅ What is Achieved](#-what-is-achieved)
+- [🔮 Future Ideas (Optional)](#-future-ideas-optional)
+- [📄 License](#-license)
+- [🙋‍♂️ Author](#-author)
 
 ## 🚀 Features
 
